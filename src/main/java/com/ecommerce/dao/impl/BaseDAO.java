@@ -6,6 +6,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
+import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,12 +36,12 @@ public abstract class BaseDAO<PK extends Serializable, E extends BaseEntity> imp
     }
 
     @Override
-    public void persist(BaseEntity e) {
+    public void persist(E e) {
         session.persist(e);
     }
 
     @Override
-    public void delete(BaseEntity e) {
+    public void delete(E e) {
         session.remove(e);
     }
 }

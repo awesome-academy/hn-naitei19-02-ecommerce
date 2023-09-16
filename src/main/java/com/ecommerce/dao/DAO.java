@@ -11,7 +11,7 @@ import java.util.List;
  * @Date: 15/09/2023
  * @Time: 09:12
  */
-public interface DAO<PK extends Serializable, E extends BaseEntity> {
+public interface DAO<PK extends Serializable, E extends BaseEntity>{
     List<E> get();
     E get(PK id);
 
