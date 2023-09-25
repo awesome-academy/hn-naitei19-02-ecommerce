@@ -9,493 +9,78 @@
     <meta charset="UTF-8">
     <title>Danh sách hóa đơn</title>
     <link rel="stylesheet" th:href="@{/css/custom/user/order.css}"/>
+    <script defer th:src="@{/js/custom/order.js}"></script>
 </head>
 <body>
 <section layout:fragment="content" class="h-100 main bg-transparent container-fluid d-flex flex-row">
     <div id="sidebar">
-        <p> Home | <b>All Breads</b></p>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/}">Trang chủ</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Hóa đơn</li>
+            </ol>
+        </nav>
         <div class="border-bottom pb-2 ml-2">
-            <h4 id="burgundy">Filters</h4>
+            <h4>Lọc hóa đơn</h4>
         </div>
-        <div class="py-2 border-bottom ml-3">
-            <h6 class="font-weight-bold">Categories</h6>
-            <div id="orange"><span class="fa fa-minus"></span></div>
-            <form>
-                <div class="form-group"><input type="checkbox" id="artisan"> <label for="artisan">Fresh Artisan
-                    Breads</label></div>
-                <div class="form-group"><input type="checkbox" id="breakfast"> <label for="breakfast">Breakfast
-                    Breads</label></div>
-                <div class="form-group"><input type="checkbox" id="healthy"> <label for="healthy">Healthy Breads</label>
-                </div>
-            </form>
+        <div id="time" class="py-2 border-bottom ml-3">
+            <h6 class="font-weight-bold mb-3">Thời gian tạo</h6>
+            <div class="mt-2 d-flex flex-wrap" style="gap: 10px">
+                <input type="date" th:value="${#dates.format(filter.from, 'YYYY-MM-dd')}" class="date-picker py-1 px-2"
+                       id="from_date"/>
+                <input type="date" th:value="${#dates.format(filter.to, 'YYYY-MM-dd')}" class="date-picker py-1 px-2"
+                       id="to_date"/>
+            </div>
         </div>
-        <div class="py-2 border-bottom ml-3">
-            <h6 class="font-weight-bold">Accompainments</h6>
-            <div id="orange"><span class="fa fa-minus"></span></div>
-            <form>
-                <div class="form-group"><input type="checkbox" id="tea"> <label for="tea">Tea Cakes</label></div>
-                <div class="form-group"><input type="checkbox" id="cookies"> <label for="cookies">Cookies</label></div>
-                <div class="form-group"><input type="checkbox" id="pastries"> <label for="pastries">Pastries</label>
-                </div>
-                <div class="form-group"><input type="checkbox" id="dough"> <label for="dough">Cookie Dough</label></div>
-                <div class="form-group"><input type="checkbox" id="choco"> <label for="choco">Chocolates</label></div>
-            </form>
+        <div id="status" class="py-2 border-bottom ml-3 flex-wrap">
+            <h6 class="font-weight-bold mb-3">Trạng thái</h6>
+            <div class="mt-2 d-flex flex-wrap" style="gap: 10px">
+                <label data-value="" th:classappend="${filter.s}==''? 'active':''" class="btn filter-btn btn-sm">Tất
+                    cả</label>
+                <label data-value="pending" th:classappend="${filter.s}=='pending'? 'active':''"
+                       class="btn filter-btn btn-sm">Đang
+                    chờ
+                </label>
+                <label data-value="accepted" th:classappend="${filter.s}=='accepted'? 'active':''"
+                       class="btn filter-btn btn-sm">Xác nhận</label>
+                <label data-value="rejected" th:classappend="${filter.s}=='rejected'? 'active':''"
+                       class="btn filter-btn btn-sm">Từ chối</label>
+                <label data-value="cancelled" th:classappend="${filter.s}=='cancelled'? 'active':''"
+                       class="btn filter-btn btn-sm">Hủy</label>
+                <label data-value="shipping" th:classappend="${filter.s}=='shipping'? 'active':''"
+                       class="btn filter-btn btn-sm">Đang giao</label>
+                <label data-value="completed" th:classappend="${filter.s}=='completed'? 'active':''"
+                       class="btn filter-btn btn-sm">Đã giao</label>
+            </div>
         </div>
-        <div class="py-2 ml-3">
-            <h6 class="font-weight-bold">Top Offers</h6>
-            <div id="orange"><span class="fa fa-minus"></span></div>
-            <form>
-                <div class="form-group"><input type="checkbox" id="25off"> <label for="25">25% off</label></div>
-                <div class="form-group"><input type="checkbox" id="5off"> <label for="5off" id="off">5% off on artisan
-                    breads</label></div>
-            </form>
+        <div class="py-2 pt-3 ml-3 flex-wrap">
+            <span id="filter-btn" class="btn btn-sm btn-primary rounded-lg">Lọc hóa đơn</span>
         </div>
     </div>
     <div id="order-table" class="">
-        <table class="table table-borderless main">
-            <thead class="bg-white">
-            <tr class="head">
-                <th scope="col">Order ID</th>
-                <th scope="col">Created</th>
-                <th scope="col">Customer</th>
-                <th scope="col">Fullfillment</th>
-                <th scope="col">Total</th>
-                <th scope="col">Profit</th>
-                <th scope="col">Status</th>
-                <th scope="col">Updated</th>
-            </tr>
-            </thead>
-            <tbody>
-
-
-            <tr class="rounded bg-light wow fadeIn" data-wow-delay="0s">
-
-                <td class="order-color">121 090</td>
-                <td>Mar 20</td>
-                <td class="d-flex align-items-center">
-                    <img src="https://i.imgur.com/0LKZQYM.jpg" class="rounded-circle" width="25">
-                    <span class="ml-2">Sara Graham</span>
-                </td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-danger btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
-                                data-toggle="dropdown" aria-expanded="false">
-                            Pending Receipt
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Yes</a></li>
-                            <li><a class="dropdown-item" href="#">No</a></li>
-                            <li><a class="dropdown-item" href="#">Hold</a></li>
-                        </ul>
-                    </div>
-                </td>
-                <td>$604.50</td>
-                <td>$182.40</td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-success btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
-                                data-toggle="dropdown" aria-expanded="false">
-                            Paid
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Yes</a></li>
-                            <li><a class="dropdown-item" href="#">No</a></li>
-
-                        </ul>
-                    </div>
-                </td>
-                <td>Today</td>
-
-            </tr>
-            <tr class="rounded bg-white wow fadeIn" data-wow-delay=".05s">
-
-                <td class="order-color">121 090</td>
-                <td>Mar 20</td>
-                <td class="d-flex align-items-center">
-                    <img src="https://i.imgur.com/0LKZQYM.jpg" class="rounded-circle" width="25">
-                    <span class="ml-2">Sara Graham</span>
-                </td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-danger btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
-                                data-toggle="dropdown" aria-expanded="false">
-                            Pending Receipt
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Yes</a></li>
-                            <li><a class="dropdown-item" href="#">No</a></li>
-                            <li><a class="dropdown-item" href="#">Hold</a></li>
-                        </ul>
-                    </div>
-                </td>
-                <td>$604.50</td>
-                <td>$182.40</td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-success btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
-                                data-toggle="dropdown" aria-expanded="false">
-                            Paid
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Yes</a></li>
-                            <li><a class="dropdown-item" href="#">No</a></li>
-
-                        </ul>
-                    </div>
-                </td>
-                <td>Today</td>
-
-            </tr>
-
-            <tr class="rounded bg-light wow fadeIn" data-wow-delay=".1s">
-
-                <td class="order-color">121 090</td>
-                <td>Mar 20</td>
-                <td class="d-flex align-items-center">
-                    <img src="https://i.imgur.com/0LKZQYM.jpg" class="rounded-circle" width="25">
-                    <span class="ml-2">Sara Graham</span>
-                </td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-danger btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
-                                data-toggle="dropdown" aria-expanded="false">
-                            Pending Receipt
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Yes</a></li>
-                            <li><a class="dropdown-item" href="#">No</a></li>
-                            <li><a class="dropdown-item" href="#">Hold</a></li>
-                        </ul>
-                    </div>
-                </td>
-                <td>$604.50</td>
-                <td>$182.40</td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-success btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
-                                data-toggle="dropdown" aria-expanded="false">
-                            Paid
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Yes</a></li>
-                            <li><a class="dropdown-item" href="#">No</a></li>
-
-                        </ul>
-                    </div>
-                </td>
-                <td>Today</td>
-
-            </tr>
-
-            <tr class="rounded bg-white wow fadeIn" data-wow-delay=".15s">
-
-                <td class="order-color">121 089</td>
-                <td>Mar 20</td>
-                <td class="d-flex align-items-center">
-                    <img src="https://i.imgur.com/ZSkeqnd.jpg" class="rounded-circle" width="25">
-                    <span class="ml-2">Almer Macgee</span>
-                </td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-success btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
-                                data-toggle="dropdown" aria-expanded="false">
-                            Fullfilled
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Yes</a></li>
-                            <li><a class="dropdown-item" href="#">No</a></li>
-                            <li><a class="dropdown-item" href="#">Hold</a></li>
-                        </ul>
-                    </div>
-                </td>
-                <td>$604.50</td>
-                <td>$182.40</td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
-                                data-toggle="dropdown" aria-expanded="false">
-                            Authorized
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Yes</a></li>
-                            <li><a class="dropdown-item" href="#">No</a></li>
-
-                        </ul>
-                    </div>
-                </td>
-                <td>Today</td>
-
-            </tr>
-
-
-            <tr class="rounded bg-light wow fadeIn" data-wow-delay=".2s">
-
-                <td class="order-color">121 089</td>
-                <td>Mar 16</td>
-                <td class="d-flex align-items-center">
-                    <img src="https://i.imgur.com/ZSkeqnd.jpg" class="rounded-circle" width="25">
-                    <span class="ml-2">Victor Scold</span>
-                </td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-success btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
-                                data-toggle="dropdown" aria-expanded="false">
-                            Fullfilled
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Yes</a></li>
-                            <li><a class="dropdown-item" href="#">No</a></li>
-                            <li><a class="dropdown-item" href="#">Hold</a></li>
-                        </ul>
-                    </div>
-                </td>
-                <td>$604.50</td>
-                <td>$182.40</td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
-                                data-toggle="dropdown" aria-expanded="false">
-                            Authorized
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Yes</a></li>
-                            <li><a class="dropdown-item" href="#">No</a></li>
-
-                        </ul>
-                    </div>
-                </td>
-                <td>Yesterday</td>
-
-            </tr>
-
-
-            <tr class="rounded bg-white wow fadeIn" data-wow-delay=".25s">
-
-                <td class="order-color">121 088</td>
-                <td>Mar 20</td>
-                <td class="d-flex align-items-center">
-                    <img src="https://i.imgur.com/Z6dkoKY.jpg" class="rounded-circle" width="25">
-                    <span class="ml-2">Harriet Scold</span>
-                </td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-success btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
-                                data-toggle="dropdown" aria-expanded="false">
-                            Fullfilled
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Yes</a></li>
-                            <li><a class="dropdown-item" href="#">No</a></li>
-                            <li><a class="dropdown-item" href="#">Hold</a></li>
-                        </ul>
-                    </div>
-                </td>
-                <td>$604.50</td>
-                <td>$182.40</td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-success btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
-                                data-toggle="dropdown" aria-expanded="false">
-                            Paid
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Yes</a></li>
-                            <li><a class="dropdown-item" href="#">No</a></li>
-
-                        </ul>
-                    </div>
-                </td>
-                <td>Yesterday</td>
-
-            </tr>
-
-
-            <tr class="rounded bg-light wow fadeIn" data-wow-delay=".3s">
-
-                <td class="order-color">121 090</td>
-                <td>Mar 20</td>
-                <td class="d-flex align-items-center">
-                    <img src="https://i.imgur.com/qddlYmO.jpg" class="rounded-circle" width="25">
-                    <span class="ml-2">Sara Graham</span>
-                </td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-danger btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
-                                data-toggle="dropdown" aria-expanded="false">
-                            Pending Receipt
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Yes</a></li>
-                            <li><a class="dropdown-item" href="#">No</a></li>
-                            <li><a class="dropdown-item" href="#">Hold</a></li>
-                        </ul>
-                    </div>
-                </td>
-                <td>$604.50</td>
-                <td>$182.40</td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-success btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
-                                data-toggle="dropdown" aria-expanded="false">
-                            Paid
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Yes</a></li>
-                            <li><a class="dropdown-item" href="#">No</a></li>
-
-                        </ul>
-                    </div>
-                </td>
-                <td>July 1,2020</td>
-
-            </tr>
-
-
-            <tr class="rounded bg-white wow fadeIn" data-wow-delay=".35s">
-
-                <td class="order-color">121 090</td>
-                <td>Mar 20</td>
-                <td class="d-flex align-items-center">
-                    <img src="https://i.imgur.com/0LKZQYM.jpg" class="rounded-circle" width="25">
-                    <span class="ml-2">Sara Graham</span>
-                </td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-danger btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
-                                data-toggle="dropdown" aria-expanded="false">
-                            Pending Receipt
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Yes</a></li>
-                            <li><a class="dropdown-item" href="#">No</a></li>
-                            <li><a class="dropdown-item" href="#">Hold</a></li>
-                        </ul>
-                    </div>
-                </td>
-                <td>$604.50</td>
-                <td>$182.40</td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-success btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
-                                data-toggle="dropdown" aria-expanded="false">
-                            Paid
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Yes</a></li>
-                            <li><a class="dropdown-item" href="#">No</a></li>
-
-                        </ul>
-                    </div>
-                </td>
-                <td>June 20,2020</td>
-
-            </tr>
-
-            <tr class="rounded bg-light wow fadeIn" data-wow-delay=".4s">
-
-                <td class="order-color">121 090</td>
-                <td>Mar 20</td>
-                <td class="d-flex align-items-center">
-                    <img src="https://i.imgur.com/0LKZQYM.jpg" class="rounded-circle" width="25">
-                    <span class="ml-2">Sara Graham</span>
-                </td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-danger btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
-                                data-toggle="dropdown" aria-expanded="false">
-                            Pending Receipt
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Yes</a></li>
-                            <li><a class="dropdown-item" href="#">No</a></li>
-                            <li><a class="dropdown-item" href="#">Hold</a></li>
-                        </ul>
-                    </div>
-                </td>
-                <td>$604.50</td>
-                <td>$182.40</td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-success btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
-                                data-toggle="dropdown" aria-expanded="false">
-                            Paid
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Yes</a></li>
-                            <li><a class="dropdown-item" href="#">No</a></li>
-
-                        </ul>
-                    </div>
-                </td>
-                <td>June 20,2020</td>
-
-            </tr>
-
-            <tr class="rounded bg-white wow fadeIn" data-wow-delay=".45s">
-
-                <td class="order-color">121 091</td>
-                <td>Mar 21</td>
-                <td class="d-flex align-items-center">
-                    <img src="https://i.imgur.com/C4egmYM.jpg" class="rounded-circle" width="25">
-                    <span class="ml-2">Harrient Santigo</span>
-                </td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-warning btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
-                                data-toggle="dropdown" aria-expanded="false">
-                            Unfullfilled
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Fullfilled</a></li>
-                            <li><a class="dropdown-item" href="#">Unfullfilled</a></li>
-                            <li><a class="dropdown-item" href="#">Hold</a></li>
-                        </ul>
-                    </div>
-                </td>
-                <td>$604.50</td>
-                <td>$182.40</td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
-                                data-toggle="dropdown" aria-expanded="false">
-                            Authorized
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Yes</a></li>
-                            <li><a class="dropdown-item" href="#">No</a></li>
-
-                        </ul>
-                    </div>
-                </td>
-                <td>Today</td>
-
-            </tr>
-            </tbody>
-        </table>
+        <section class="orders">
+            <h2 th:if="${to==0}">Không có hóa đơn nào được tìm thấy -> <a th:href="@{/orders}">xóa bộ lọc</a></h2>
+            <th:block th:each="order :${orders}">
+                <div th:replace="~{fragments/order ::
+                        order(
+                        ${order.id},
+                        ${order.firstProduct},
+                        ${order.orderDetails.get(0).quantity},
+                        ${order.totalPrice},
+                        ${order.status},
+                        ${#dates.format(order.createdAt, 'dd/MM/yyyy')}
+                        )}"
+                >
+                </div>
+            </th:block>
+        </section>
         <div class="table-footer d-flex justify-content-between align-items-end">
             <p>
-                1-10 trong tổng số 100 hóa đơn
+                <span th:text="${from}"></span>-<span th:text="${to}"></span>
+                trong tổng số <span th:text="${totalItems}"></span> hóa đơn
             </p>
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-
+            <div th:replace="~{fragments/pagination :: pagination('orders?'+'from='+${filter.from==null?'':#dates.format(filter.from, 'YYYY-MM-dd')}+'&to='+${filter.to ==null?'': #dates.format(filter.to, 'YYYY-MM-dd')}+'&s='+${filter.s}, ${totalPages}, ${currentPage})}"></div>
         </div>
-
     </div>
 </section>
 </body>
