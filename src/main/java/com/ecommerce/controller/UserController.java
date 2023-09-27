@@ -22,11 +22,13 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/users")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserController {
-    private final UserService userService;
 
+    private final UserService userService;
     @GetMapping("/{username}")
     @ResponseBody
     public UserDTO findByUsername(@PathVariable String username) {
         return userService.findByUsername(username);
     }
+
 }
+

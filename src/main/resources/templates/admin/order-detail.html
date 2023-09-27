@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+	xmlns="http://www.w3.org/1999/xhtml" lang="vi">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Chi tiết đơn hàng</title>
+	<!-- <link rel="stylesheet" th:href="@{/resources/static/css/custom/admin/order.css}"> -->
+	<style>
+		/* CSS để làm cho giao diện đẹp hơn, bạn có thể tùy chỉnh theo ý muốn */
+		body {
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+			background-color: #f4f4f4;
+		}
+	
+		.order-details {
+			background-color: #fff;
+			border: 1px solid #ddd;
+			padding: 20px;
+			margin: 20px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		}
+	
+		.product-description {
+			margin-top: 10px;
+			padding: 10px;
+			background-color: #f9f9f9;
+			border: 1px solid #eee;
+		}
+	
+		table {
+			border-collapse: collapse;
+			/* Loại bỏ khoảng cách giữa các ô */
+			width: 100%;
+		}
+	
+		th,
+		td {
+			padding: 10px;
+			/* Thêm padding vào các ô */
+			text-align: center;
+			/* Căn trái nội dung trong các ô */
+			border: 1px solid #ddd;
+			/* Thêm viền cho các ô */
+		}
+	
+		.product-details {
+			display: flex;
+			justify-content: space-between;
+			/* Đặt các phần tử bên trong cùng một hàng */
+		}
+	
+		.recipient-info,
+		.price {
+			width: 60%;
+			/* Chia đều khoảng trống cho cả hai cột */
+		}
+	
+		.spacer {
+			flex-grow: 2;
+		}
+	</style>
+</head>
+
+<body>
+		<h2>Thông tin đơn hàng</h2>
+
+		<div>
+			<strong>Mã đơn hàng:</strong> <span th:text="${orderId}"></span> <br>
+			<strong>Thời gian đặt hàng:</strong> <span th:text="${createAt}"></span> <br>
+			<strong>Tình trạng:</strong> <span th:text="${status}"></span>
+		</div>
+
+		<div class="product-description">
+			<h3>Thông tin sản phẩm</h3>
+			<table>
+				<tr>
+					<th>Ảnh sản phẩm</th>
+					<th>Tên sản phẩm</th>
+					<th>Giá tiền</th>
+					<th>Số lượng</th>
+					<th>Chi tiết sản phẩm</th>
+				</tr>
+				<tr th:each="orderDetail : ${orderDetails}">
+					<td><img th:src="${orderDetail.product.thumbnail}"
+							alt="Ảnh sản phẩm 1" width="125" height="150"></td>
+					<td th:text="${orderDetail.product.name}"></td>
+					<td th:text="${orderDetail.price}"></td>
+					<td th:text="${orderDetail.quantity}"></td>
+					<td><a href="#"> Xem </a></td>
+				</tr>
+			</table>
+		</div>
+		<!-- Thêm các mô tả sản phẩm khác nếu cần -->
+
+		<div class="product-details">
+			<div class="recipient-info">
+				<h2>Thông tin người nhận</h2>
+				<strong><span th:text="${receiver.name}"> </span></strong> <br>
+				<strong>Địa chỉ:</strong> <span th:text="${receiver.address}"></span> <br>
+				<strong>Số điện thoại:</strong> <span th:text="${receiver.phone}"></span>
+			</div>
+			<div class="price">
+				<h2>Giá tiền</h2>
+				<strong>Tổng tiền sản phẩm</strong> <span th:text="${totalPrice}"></span>đ <br>
+				<span class="spacer"></span>
+				<strong>Tổng phí ship</strong> <span th:text="${shippingFee}"></span>đ <br>
+				<span class="spacer"></span>
+				<hr>
+				<strong>TỔNG CỘNG</strong> <span th:text="${total}"></span>
+				<span class="spacer"></span>
+			</div>
+		</div>
+</body>
+
+</html>

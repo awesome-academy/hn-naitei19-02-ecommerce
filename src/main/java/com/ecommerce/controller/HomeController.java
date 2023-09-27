@@ -2,7 +2,6 @@ package com.ecommerce.controller;
 
 import java.util.List;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,12 +11,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.ecommerce.dto.CategoryDTO;
 import com.ecommerce.dto.ProductDTO;
 import com.ecommerce.model.Product;
 import com.ecommerce.service.CategoryService;
 import com.ecommerce.service.SearchService;
+
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor

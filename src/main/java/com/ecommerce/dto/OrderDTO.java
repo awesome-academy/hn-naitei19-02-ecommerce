@@ -18,7 +18,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderDTO extends BaseDTO {
-    private Integer totalPrice;
+
+    private Long totalPrice;
     private String shippingStatus;
     private Long shippingFee;
     private Long receiverId;
@@ -28,6 +29,8 @@ public class OrderDTO extends BaseDTO {
     private Integer status;
     @Valid
     private List<OrderDetailDTO> orderDetails;
+
     private ProductDTO firstProduct;
     private Date createdAt;
+    private String fullname;
 }

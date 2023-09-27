@@ -4,6 +4,9 @@ import com.ecommerce.model.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
+
 import org.springframework.beans.BeanUtils;
 
 /**

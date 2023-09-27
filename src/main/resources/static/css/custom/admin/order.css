@@ -1,0 +1,54 @@
+/* CSS để làm cho giao diện đẹp hơn, bạn có thể tùy chỉnh theo ý muốn */
+body {
+	font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+	background-color: #f4f4f4;
+}
+
+.order-details {
+	background-color: #fff;
+	border: 1px solid #ddd;
+	padding: 20px;
+	margin: 20px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.product-description {
+	margin-top: 10px;
+	padding: 10px;
+	background-color: #f9f9f9;
+	border: 1px solid #eee;
+}
+
+table {
+	border-collapse: collapse;
+	/* Loại bỏ khoảng cách giữa các ô */
+	width: 100%;
+}
+
+th,
+td {
+	padding: 10px;
+	/* Thêm padding vào các ô */
+	text-align: center;
+	/* Căn trái nội dung trong các ô */
+	border: 1px solid #ddd;
+	/* Thêm viền cho các ô */
+}
+
+.product-details {
+	display: flex;
+	justify-content: space-between;
+	/* Đặt các phần tử bên trong cùng một hàng */
+}
+
+.recipient-info,
+.price {
+	width: 60%;
+	/* Chia đều khoảng trống cho cả hai cột */
+}
+
+.spacer {
+	flex-grow: 2;
+}

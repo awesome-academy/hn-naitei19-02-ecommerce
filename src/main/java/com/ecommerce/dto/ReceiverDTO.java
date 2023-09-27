@@ -17,6 +17,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReceiverDTO extends BaseDTO {
+
     @Size(min = 2, max = 50, message = "Name must be between 2 and 50 characters")
     @NotEmpty(message = "Name must not be empty")
     private String name;

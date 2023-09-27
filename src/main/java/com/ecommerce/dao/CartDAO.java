@@ -3,7 +3,6 @@ package com.ecommerce.dao;
 import com.ecommerce.model.Cart;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-
 import java.util.Optional;
 
 /**

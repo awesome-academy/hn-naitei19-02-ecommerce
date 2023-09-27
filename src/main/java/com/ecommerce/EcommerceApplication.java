@@ -6,6 +6,7 @@ import org.springframework.context.annotation.ImportResource;
 
 @SpringBootApplication
 @ImportResource({"classpath*:application-context.xml"})
+
 public class EcommerceApplication {
 
 	public static void main(String[] args) {

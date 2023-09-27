@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.ecommerce.dto.OrderDTO;
+import com.ecommerce.dto.ReceiverDTO;
 import com.ecommerce.service.OrderService;
 
 import jakarta.validation.Valid;
@@ -46,11 +47,11 @@ public class OrderController {
     }
 
     @PostMapping
-    public String createNewOrder(@ModelAttribute @Valid OrderDTO orderDTO, BindingResult result, final RedirectAttributes redirectAttributes) {
+    public String createNewOrder(@ModelAttribute @Valid ReceiverDTO receiverDTO, BindingResult result, final RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return "user/order/create";
         }
-        OrderDTO order = orderService.createOrder(userId, orderDTO);
+        OrderDTO order = orderService.createOrder(userId, receiverDTO);
         redirectAttributes.addFlashAttribute("message", "Tạo hóa đơn thành công!");
         return "redirect:/orders/" + order.getId();
     }

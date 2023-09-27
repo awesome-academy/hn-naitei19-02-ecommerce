@@ -16,6 +16,7 @@ public class Category extends BaseEntity {
 
     private String name;
 
+
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private List<Category> children;
