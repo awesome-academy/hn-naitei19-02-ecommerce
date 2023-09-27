@@ -1,7 +1,5 @@
 package com.ecommerce.dto;
-
-import com.ecommerce.model.BaseEntity;
-import jakarta.validation.Valid;
+import com.ecommerce.validator.ProductAvailable;
 import lombok.*;
 
 /**
@@ -19,6 +17,7 @@ public class OrderDetailDTO extends BaseDTO {
 
     private Long price;
     private Long orderId;
+    private ProductDTO product;
     private Long productId;
     private Integer quantity;
     @Valid
